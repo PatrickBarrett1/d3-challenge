@@ -79,6 +79,30 @@ d3.csv('data.csv').then(function(stateData) {
             return data.abbr
         });
 
+// create Tooltip
+    var toolTip = d3.tip()
+        .attr('class', 'tooltip')
+        .offset([80, -70])
+        .style('position', 'absolute')
+        .style('background', 'lightsteelblue')
+        .style('pointer-events', 'none')
+        .html(function(d) {
+            return (`${d.state}<br>Poverty (%): ${d.poverty}<br>Obesity (%): ${d.healthcare}`)
+        });      
+
+// add tooltip in chart
+    chartGroup.call(toolTip);   
+    
+// add mouseover to display a tooltip   
+    circlesGroup.on('mouseover', function(data) {
+        toolTip.show(data, this);
+    })
+
+    // add mouseout    
+    .on('mouseout', function(data, index) {
+        toolTip.hide(data);
+    });
+
     // create axes labels  
     chartGroup.append('text')
         .attr('transform', 'rotate(-90)')
